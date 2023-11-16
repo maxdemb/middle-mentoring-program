@@ -7,6 +7,7 @@
    Demonstrate the work of the each case with console utility.
 */
 using System;
+using System.Threading.Tasks;
 
 namespace MultiThreading.Task6.Continuation
 {
@@ -24,7 +25,63 @@ namespace MultiThreading.Task6.Continuation
 
             // feel free to add your code
 
+
+            var parentTask = Task.Run(ParentTask);
+
+            parentTask.ContinueWith(x => A_regardless(), TaskContinuationOptions.None);
+            parentTask.ContinueWith(x => B_withoutSuccess(), TaskContinuationOptions.OnlyOnFaulted);
+            parentTask.ContinueWith(x => C_sameThread(), TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously);
+            parentTask.ContinueWith(x => D_OutsideThePool(), TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.LongRunning);
+
+
             Console.ReadLine();
         }
+
+        private static void ParentTask()
+        {
+            Console.WriteLine("Parent task is running");
+            //Console.WriteLine("Press any button for success, 0 for fail");
+
+            //var key = Console.ReadLine();
+
+            //if(key != "0")
+            //{
+            //    Console.WriteLine("Success");
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Parent task failed");
+            //    throw new Exception("Parent task failed");
+            //}
+
+            throw new Exception("Parent task failed");
+
+
+            Console.WriteLine();
+            
+        }
+
+        private static void A_regardless()
+        {
+            Console.WriteLine("Task A (regardless) works!");
+
+        }
+
+        private static void B_withoutSuccess()
+        {
+            Console.WriteLine("Task B (without success) works!");
+        }
+
+        private static void C_sameThread()
+        {
+            Console.WriteLine("Task C works!");
+        }
+
+        private static void D_OutsideThePool()
+        {
+            Console.WriteLine("Task D works!");
+        }
+
+
     }
 }
