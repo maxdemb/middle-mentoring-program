@@ -40,25 +40,8 @@ namespace MultiThreading.Task6.Continuation
         private static void ParentTask()
         {
             Console.WriteLine("Parent task is running");
-            //Console.WriteLine("Press any button for success, 0 for fail");
-
-            //var key = Console.ReadLine();
-
-            //if(key != "0")
-            //{
-            //    Console.WriteLine("Success");
-            //}
-            //else
-            //{
-            //    Console.WriteLine("Parent task failed");
-            //    throw new Exception("Parent task failed");
-            //}
-
-            throw new Exception("Parent task failed");
-
-
-            Console.WriteLine();
             
+            throw new Exception("Parent task failed");
         }
 
         private static void A_regardless()
