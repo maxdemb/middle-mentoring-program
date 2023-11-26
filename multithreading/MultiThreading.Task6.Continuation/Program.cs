@@ -7,6 +7,7 @@
    Demonstrate the work of the each case with console utility.
 */
 using System;
+using System.Threading.Tasks;
 
 namespace MultiThreading.Task6.Continuation
 {
@@ -24,7 +25,46 @@ namespace MultiThreading.Task6.Continuation
 
             // feel free to add your code
 
+
+            var parentTask = Task.Run(ParentTask);
+
+            parentTask.ContinueWith(x => A_regardless(), TaskContinuationOptions.None);
+            parentTask.ContinueWith(x => B_withoutSuccess(), TaskContinuationOptions.OnlyOnFaulted);
+            parentTask.ContinueWith(x => C_sameThread(), TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously);
+            parentTask.ContinueWith(x => D_OutsideThePool(), TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.LongRunning);
+
+
             Console.ReadLine();
         }
+
+        private static void ParentTask()
+        {
+            Console.WriteLine("Parent task is running");
+            
+            throw new Exception("Parent task failed");
+        }
+
+        private static void A_regardless()
+        {
+            Console.WriteLine("Task A (regardless) works!");
+
+        }
+
+        private static void B_withoutSuccess()
+        {
+            Console.WriteLine("Task B (without success) works!");
+        }
+
+        private static void C_sameThread()
+        {
+            Console.WriteLine("Task C works!");
+        }
+
+        private static void D_OutsideThePool()
+        {
+            Console.WriteLine("Task D works!");
+        }
+
+
     }
 }
